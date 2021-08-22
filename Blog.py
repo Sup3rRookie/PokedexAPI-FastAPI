@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from typing import Optional
+from pydantic import BaseModel
 
 app = FastAPI()
+
+'''
+Adding - GET Method to our blog API
+'''
 
 @app.get('/')
 def index():
@@ -29,3 +34,15 @@ def show(id: int):
     # fetch blog with id = id
     return {'data':id}
 
+'''
+Adding - POST Method to our blog API
+'''
+
+class Blog(BaseModel):
+    title: str
+    body: str
+    published: Optional[bool]
+
+@app.post('/blog')
+def create_blog(request: Blog):
+    return {'data' : f'New blog - {request.title} has successfully been created!'}
